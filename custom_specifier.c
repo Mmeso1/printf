@@ -16,14 +16,12 @@ int custom_specifier(char specifier, va_list args)
 	{
 		case 'd':
 		case 'i':
-			return handleSignedInt(args, specifier);
-			break;
+			return (handleSignedInt(args, specifier));
 		case 'u':
 		case 'o':
 		case 'x':
 		case 'X':
-			return handleUnsignedInt(args, specifier);
-			break;
+			return (handleUnsignedInt(args, specifier));
 		default:
 			return (-1);
 	}
@@ -62,23 +60,18 @@ const char *get_format_string(char specifier)
 		case 'd':
 		case 'i':
 			return ("%d");
-			break;
 
 		case 'u':
 			return ("%u");
-			break;		
 
 		case 'o':
 			return ("%o");
-			break;
 
 		case 'x':
 			return ("%x");
-			break;
 
 		case 'X':
 			return ("%X");
-			break;
 		default:
 			return (NULL);
 	}
@@ -106,12 +99,10 @@ int handleSignedInt(va_list args, char specifier)
 
 	temp = num;
 
-	do
-	{
+	do {
 		temp /= 10;
 		len++;
-	}
-	while (temp != 0);
+	} while (temp != 0);
 
 	num_str = (char *)malloc((len + 1) * sizeof(char));
 
@@ -143,12 +134,10 @@ int handleUnsignedInt(va_list args, char specifier)
 	const char *format;
 	unsigned int written_len;
 
-	do
-	{
+	do {
 		temp /= 10;
 		len++;
-	}
-	while (temp != 0);
+	} while (temp != 0);
 
 	num_str = (char *)malloc((len + 1) * sizeof(char));
 	if (num_str == NULL)
