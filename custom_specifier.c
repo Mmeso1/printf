@@ -139,7 +139,7 @@ int handleUnsignedInt(va_list args, char specifier)
 		len++;
 	} while (temp != 0);
 
-	num_str = (char *)malloc((len + 1) * sizeof(char));
+	num_str = (char *)malloc((len + 2) * sizeof(char));
 	if (num_str == NULL)
 	{
 		return (-1);
