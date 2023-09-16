@@ -21,19 +21,30 @@ int custom_specifier(char specifier, va_list args)
 		case 'o':
 		case 'x':
 		case 'X':
-			return (handleUnsignedInt(args, specifier));	
+			return (handleUnsignedInt(args, specifier));
+		case 'S':
+			return (handleCustomS(args));
+
 		case 'b':
 			{
 				unsigned int num = va_arg(args, unsigned int);
 				int len = 0;
 				int bit;
 
-				while (num > 0)
+				if (num == 0)
 				{
-					bit = num % 2;
-					_write(bit + '0');
-					num /= 2;
-					len++;
+					_write('0');
+					len = 1;
+				}
+				else
+				{
+					while (num > 0)
+					{
+						bit = num % 2;
+						_write(bit + '0');
+						num /= 2;
+						len++;
+					}
 				}
 				return (len);
 			}

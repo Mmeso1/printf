@@ -12,17 +12,9 @@ int process_specifier(char specifier, va_list args);
 int custom_specifier(char specifier, va_list args);
 const char *get_format_string(char specifier);
 int handleUnsignedInt(va_list args, char specifier);
-int handleSignedInt(va_list args, char specifier) ;
+int handleSignedInt(va_list args, char specifier);
+int handleCustomS(va_list args);
+char hex_to_char(int value);
 int process_format_string(const char *format, va_list args);
-
-/**
- * Prototypes of functions written by Sampson
- */
-
-int print_char(va_list types, char buffer[], int flags, int width, int precision, int size);
-int print_string(va_list types, char buffer[], int flags, int width, int precision, int size);
-int print_percent(va_list types, char buffer[],int flags, int width, int precision, int size);
-int print_int(va_list types, char buffer[], int flags, int width, int precision, int size);
-int print_binary(va_list types, char buffer[], int flags, int width, int precision, int size);
 
 #endif
