@@ -15,4 +15,14 @@ int handleUnsignedInt(va_list args, char specifier);
 int handleSignedInt(va_list args, char specifier) ;
 int process_format_string(const char *format, va_list args);
 
+/**
+ * Prototypes of functions written by Sampson
+ */
+
+int print_char(va_list types, char buffer[], int flags, int width, int precision, int size);
+int print_string(va_list types, char buffer[], int flags, int width, int precision, int size);
+int print_percent(va_list types, char buffer[],int flags, int width, int precision, int size);
+int print_int(va_list types, char buffer[], int flags, int width, int precision, int size);
+int print_binary(va_list types, char buffer[], int flags, int width, int precision, int size);
+
 #endif
