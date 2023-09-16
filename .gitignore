@@ -2,3 +2,4 @@ a.out
 main.c
 _printf.c
 functions.c
+flags.c
