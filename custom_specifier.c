@@ -21,31 +21,25 @@ int custom_specifier(char specifier, va_list args)
 		case 'o':
 		case 'x':
 		case 'X':
-			return (handleUnsignedInt(args, specifier));
+			return (handleUnsignedInt(args, specifier));	
+		case 'b':
+			{
+				unsigned int num = va_arg(args, unsigned int);
+				int len = 0;
+				int bit;
+
+				while (num > 0)
+				{
+					bit = num % 2;
+					_write(bit + '0');
+					num /= 2;
+					len++;
+				}
+				return (len);
+			}
 		default:
 			return (-1);
 	}
-
-	switch (specifier)
-	{
-			case 'b':
-				{
-					int num = va_arg(args, unsigned int);
-					int len = 0;
-					int bit;
-
-					while (num > 0)
-					{
-						bit = num % 2;
-						_write(bit + '0');
-						num /= 2;
-						len++;
-					}
-					return (len);
-				}
-			default:
-				return (-1);
-		}
 }
 
 /**
@@ -128,7 +122,7 @@ int handleSignedInt(va_list args, char specifier)
 int handleUnsignedInt(va_list args, char specifier)
 {
 	unsigned int num = va_arg(args, unsigned int);
-	unsigned int len = 0;
+	unsigned int len = 1;
 	unsigned int temp = num;
 	char *num_str;
 	const char *format;
@@ -139,7 +133,7 @@ int handleUnsignedInt(va_list args, char specifier)
 		len++;
 	} while (temp != 0);
 
-	num_str = (char *)malloc((len + 2) * sizeof(char));
+	num_str = (char *)malloc((len + 1) * sizeof(char));
 	if (num_str == NULL)
 	{
 		return (-1);
