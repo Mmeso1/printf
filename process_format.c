@@ -1,6 +1,5 @@
-#include <stdbool.h>
+#include "main.h"
 #include <stdio.h>
-#include <unistd.h>
 
 int process_specifier(char specifier, va_list args)
 {
@@ -9,20 +8,24 @@ int process_specifier(char specifier, va_list args)
 		case 'c':
 			{
 				int c = va_arg(args, int);
-				write((char)c);
+				_write((char)c);
 				return (1);
 			}
 		case 's':
 			{
-				char *s = var_arg(args, char *);
+				char *s = va_arg(args, char *);
 				return (s != NULL) ? write_string(s) : 0;
 			}
 		case '%':
 			{
-				write('%');
-				return (0);
+				_write('%');
+				return (1);
 			}
-		defaut:
+		default:
+			if (is_valid_specifier(specifier))
+			{
+				return custom_specifier(specifier,args);
+			}
 			return (-1);
 	}
 }
@@ -32,7 +35,7 @@ int write_string(const char *s)
 	int count = 0;
 	while (*s)
 	{
-		write(*s);
+		_write(*s);
 		s++;
 		count++;
 	}
@@ -43,6 +46,7 @@ int process_format_string(const char *format, va_list args)
 {
 	int len = 0;
 	const char *ptr = format;
+	int result;
 
 	while (*ptr)
 	{
@@ -64,10 +68,17 @@ int process_format_string(const char *format, va_list args)
 		}
 		else
 		{
-			write(*ptr);
+			_write(*ptr);
 			len++;
 		}
 		ptr++;
 	}
 	return len;
+}
+
+bool is_valid_specifier(char c)
+{
+	return (c == 'c' || c == 's' || c == '%'
+		|| c == 'b' || c == 'd' || c == 'i'
+		|| c == 'u' || c == 'o' || c == 'x' || c == 'X');
 }
