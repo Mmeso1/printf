@@ -34,7 +34,7 @@ int custom_specifier(char specifier, va_list args)
 				if (num == 0)
 				{
 					_write('0');
-					len = 1;
+					len += 1;
 				}
 				else
 				{

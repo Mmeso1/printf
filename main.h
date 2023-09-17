@@ -6,6 +6,7 @@
 
 int _printf(const char *format, ...);
 bool is_valid_specifier(char c);
+bool is_flag(char c);
 void _write(char c);
 int write_string(const char *s);
 int process_specifier(char specifier, va_list args);
@@ -15,6 +16,7 @@ int handleUnsignedInt(va_list args, char specifier);
 int handleSignedInt(va_list args, char specifier);
 int handleCustomS(va_list args);
 char hex_to_char(int value);
+int get_flags(const char *format, va_list args);
 int process_format_string(const char *format, va_list args);
 
 #endif

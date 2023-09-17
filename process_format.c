@@ -73,6 +73,7 @@ int process_format_string(const char *format, va_list args)
 		if (*ptr == '%')
 		{
 			ptr++;
+
 			if (!is_valid_specifier(*ptr))
 			{
 				return (len);
@@ -105,5 +106,6 @@ bool is_valid_specifier(char c)
 {
 	return (c == 'c' || c == 's' || c == '%'
 		|| c == 'b' || c == 'd' || c == 'i'
-		|| c == 'u' || c == 'o' || c == 'x' || c == 'X');
+		|| c == 'u' || c == 'o' || c == 'x' || c == 'X'
+		|| c == 'S');
 }
