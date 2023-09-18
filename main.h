@@ -15,6 +15,7 @@ const char *get_format_string(char specifier);
 int handleUnsignedInt(va_list args, char specifier);
 int handleSignedInt(va_list args, char specifier);
 int handleCustomS(va_list args);
+int binary_converter(va_list args);
 char hex_to_char(int value);
 int get_flags(const char *format, va_list args);
 int process_format_string(const char *format, va_list args);
