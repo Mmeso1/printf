@@ -27,7 +27,7 @@ int custom_specifier(char specifier, va_list args)
 
 		case 'b':
 			{
-				return binary_converter(args);
+				return (binary_converter(args));
 			}
 		default:
 			return (-1);
