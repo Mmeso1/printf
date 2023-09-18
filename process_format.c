@@ -29,6 +29,19 @@ int process_specifier(char specifier, va_list args)
 				_write('%');
 				return (1);
 			}
+		case 'p':
+			{
+				void *ptr = va_arg(args, void *);
+				char hex_str[19];
+
+				if (snprintf(hex_str, sizeof(hex_str), "0x%016lx", (unsigned long)ptr) > 16)
+				{
+					snprintf(hex_str, sizeof(hex_str), "0x%016lx", (unsigned long)ptr);
+				}
+
+				snprintf(hex_str, sizeof(hex_str), "%p", ptr);
+				return (write_string(hex_str) + 1);
+			}
 		default:
 			if (is_valid_specifier(specifier))
 			{
@@ -98,7 +111,7 @@ int process_format_string(const char *format, va_list args)
 }
 
 /**
- * is_valid_speifier - check if it is a valid spec
+ * is_valid_specifier - check if it is a valid spec
  * @c: the spec
  * Return: true or false
  */
@@ -107,5 +120,5 @@ bool is_valid_specifier(char c)
 	return (c == 'c' || c == 's' || c == '%'
 		|| c == 'b' || c == 'd' || c == 'i'
 		|| c == 'u' || c == 'o' || c == 'x' || c == 'X'
-		|| c == 'S');
+		|| c == 'S' || c == 'p');
 }
