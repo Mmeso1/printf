@@ -34,13 +34,12 @@ int process_specifier(char specifier, va_list args)
 				void *ptr = va_arg(args, void *);
 				char hex_str[19];
 
-				if (snprintf(hex_str, sizeof(hex_str), "0x%016lx", (unsigned long)ptr) > 16)
-				{
+				if (snprintf(hex_str, sizeof(hex_str), "0x%016lx",
+							(unsigned long)ptr) > 16)
 					snprintf(hex_str, sizeof(hex_str), "0x%016lx", (unsigned long)ptr);
-				}
 
 				snprintf(hex_str, sizeof(hex_str), "%p", ptr);
-				return (write_string(hex_str) + 1);
+				return (write_string(hex_str));
 			}
 		default:
 			if (is_valid_specifier(specifier))
