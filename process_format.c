@@ -82,7 +82,7 @@ int process_format_string(const char *format, va_list args)
     {
         char flag = 0, specifier;
         int field_width = 0, precision = -1, result;
-	    
+
         if (*format != '%')
         {
             _write(*format);
@@ -91,7 +91,7 @@ int process_format_string(const char *format, va_list args)
         }
         else
         {
-            format++; 
+            format++;
             while (*format == '+' || *format == '-' || *format == '0' || *format == ' ' || *format == '#')
             {
                 if (*format == '+')
@@ -107,28 +107,13 @@ int process_format_string(const char *format, va_list args)
                 format++;
             }
 
-            if (*format >= '1' && *format <= '9')
-            {
-                sscanf(format, "%d", &field_width);
-                while (*format >= '0' && *format <= '9')
-                    format++;
-            }
-
-            if (*format == '.')
-            {
-                format++;
-                if (*format >= '0' && *format <= '9')
-                {
-                    sscanf(format, "%d", &precision);
-                    while (*format >= '0' && *format <= '9')
-                        format++;
-                }
-            }
+            field_width = extractFieldWidth(&format);
+            precision = extractPrecision(&format);
 
             if (is_valid_specifier(*format))
             {
                 specifier = *format;
-                result = process_specifier(specifier, args);
+                result = process_specifier(specifier, args, flag, field_width, precision);
                 if (result == -1)
                     return (-1);
 
@@ -146,6 +131,7 @@ int process_format_string(const char *format, va_list args)
 
     return (len);
 }
+
 
 /**
  * is_valid_specifier - check if it is a valid spec
