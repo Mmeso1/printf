@@ -78,7 +78,7 @@ int process_format_string(const char *format, va_list args)
 {
 	int len = 0;
 	const char *ptr = format;
-	int result;
+	int result, field_width;
 	char flag;
 
 	while (*ptr)
@@ -90,17 +90,23 @@ int process_format_string(const char *format, va_list args)
 
 			while (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
 			{
-				if (*ptr == '+')
-					flag |= FLAG_PLUS;
-				else if (*ptr == '-')
-					flag |= FLAG_MINUS;
-				else if (*ptr == '0')
-					flag |= FLAG_ZERO;
-				else if (*ptr == ' ')
-					flag |= FLAG_SPACE;
-				else if (*ptr == '#')
-					flag |= FLAG_HASH;
+				flag |= (*ptr == '+') ? FLAG_PLUS : 0;
+				flag |= (*ptr == '-') ? FLAG_MINUS : 0;
+				flag |= (*ptr == '0') ? FLAG_ZERO : 0;
+				flag |= (*ptr == ' ') ? FLAG_SPACE : 0;
+				flag |= (*ptr == '#') ? FLAG_HASH : 0;
+
+				if ((*ptr == '+' && field_width > 0) || (*ptr == '-' && field_width < 0))
+				{
+					_write((*ptr == '+') ? '+' : '-');
+					len++;
+				}
 				ptr++;
+			}
+			while (*format >= '0' && *format <= '9')
+			{
+				field_width = field_width * 10 + (*format - '0');
+				format++;
 			}
 			
 			if (!is_valid_specifier(*ptr))
