@@ -79,18 +79,31 @@ int process_format_string(const char *format, va_list args)
 	int len = 0;
 	const char *ptr = format;
 	int result;
+	char flag;
 
 	while (*ptr)
 	{
 		if (*ptr == '%')
 		{
 			ptr++;
+			flag = FLAG_NONE;
 
-			if (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
+			while (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
 			{
-				len += handleFlags(args, ptr);
+				if (*ptr == '+')
+					flag |= FLAG_PLUS;
+				else if (*ptr == '-')
+					flag |= FLAG_MINUS;
+				else if (*ptr == '0')
+					flag |= FLAG_ZERO;
+				else if (*ptr == ' ')
+					flag |= FLAG_SPACE;
+				else if (*ptr == '#')
+					flag |= FLAG_HASH;
+				ptr++;
 			}
-			else if (!is_valid_specifier(*ptr))
+			
+			if (!is_valid_specifier(*ptr))
 			{
 				return (len);
 			}

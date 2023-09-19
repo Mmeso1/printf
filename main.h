@@ -4,6 +4,13 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
+#define FLAG_NONE   0x00
+#define FLAG_PLUS   0x01
+#define FLAG_MINUS  0x02
+#define FLAG_ZERO   0x04
+#define FLAG_SPACE  0x08
+#define FLAG_HASH   0x10
+
 int _printf(const char *format, ...);
 bool is_valid_specifier(char c);
 bool is_flag(char c);
