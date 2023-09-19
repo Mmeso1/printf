@@ -76,41 +76,75 @@ int write_string(const char *s)
  */
 int process_format_string(const char *format, va_list args)
 {
-	int len = 0;
-	const char *ptr = format;
-	int result;
+    int len = 0;
 
-	while (*ptr)
-	{
-		if (*ptr == '%')
-		{
-			ptr++;
+    while (*format)
+    {
+        char flag = 0, specifier;
+        int field_width = 0, precision = -1, result;
+	    
+        if (*format != '%')
+        {
+            _write(*format);
+            len++;
+            format++;
+        }
+        else
+        {
+            format++; 
+            while (*format == '+' || *format == '-' || *format == '0' || *format == ' ' || *format == '#')
+            {
+                if (*format == '+')
+                    flag |= FLAG_PLUS;
+                else if (*format == '-')
+                    flag |= FLAG_MINUS;
+                else if (*format == '0')
+                    flag |= FLAG_ZERO;
+                else if (*format == ' ')
+                    flag |= FLAG_SPACE;
+                else if (*format == '#')
+                    flag |= FLAG_HASH;
+                format++;
+            }
 
-			if (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
-			{
-				len += handleFlags(args, ptr);
-			}
-			else if (!is_valid_specifier(*ptr))
-			{
-				return (len);
-			}
+            if (*format >= '1' && *format <= '9')
+            {
+                sscanf(format, "%d", &field_width);
+                while (*format >= '0' && *format <= '9')
+                    format++;
+            }
 
-			result = process_specifier(*ptr, args);
-			if (result == -1)
-			{
-				return (len);
-			}
+            if (*format == '.')
+            {
+                format++;
+                if (*format >= '0' && *format <= '9')
+                {
+                    sscanf(format, "%d", &precision);
+                    while (*format >= '0' && *format <= '9')
+                        format++;
+                }
+            }
 
-			len += result;
-		}
-		else
-		{
-			_write(*ptr);
-			len++;
-		}
-		ptr++;
-	}
-	return (len);
+            if (is_valid_specifier(*format))
+            {
+                specifier = *format;
+                result = process_specifier(specifier, args);
+                if (result == -1)
+                    return (-1);
+
+                len += result;
+                format++;
+            }
+            else
+            {
+                _write('%');
+                format++;
+                len++;
+            }
+        }
+    }
+
+    return (len);
 }
 
 /**
