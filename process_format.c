@@ -86,7 +86,11 @@ int process_format_string(const char *format, va_list args)
 		{
 			ptr++;
 
-			if (!is_valid_specifier(*ptr))
+			if (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
+			{
+				len += handleFlags(args, ptr);
+			}
+			else if (!is_valid_specifier(*ptr))
 			{
 				return (len);
 			}
