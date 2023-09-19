@@ -76,55 +76,63 @@ int write_string(const char *s)
  */
 int process_format_string(const char *format, va_list args)
 {
-	int len = 0;
-	const char *ptr = format;
-	int result;
-	char flag;
+    int len = 0;
 
-	while (*ptr)
-	{
-		if (*ptr == '%')
-		{
-			ptr++;
-			flag = FLAG_NONE;
+    while (*format)
+    {
+        char flag = 0, specifier;
+        int field_width = 0, precision = -1, result;
 
-			while (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
-			{
-				if (*ptr == '+')
-					flag |= FLAG_PLUS;
-				else if (*ptr == '-')
-					flag |= FLAG_MINUS;
-				else if (*ptr == '0')
-					flag |= FLAG_ZERO;
-				else if (*ptr == ' ')
-					flag |= FLAG_SPACE;
-				else if (*ptr == '#')
-					flag |= FLAG_HASH;
-				ptr++;
-			}
-			
-			if (!is_valid_specifier(*ptr))
-			{
-				return (len);
-			}
+        if (*format != '%')
+        {
+            _write(*format);
+            len++;
+            format++;
+        }
+        else
+        {
+            format++;
+            while (*format == '+' || *format == '-' || *format == '0' || *format == ' ' || *format == '#')
+            {
+                if (*format == '+')
+                    flag |= FLAG_PLUS;
+                else if (*format == '-')
+                    flag |= FLAG_MINUS;
+                else if (*format == '0')
+                    flag |= FLAG_ZERO;
+                else if (*format == ' ')
+                    flag |= FLAG_SPACE;
+                else if (*format == '#')
+                    flag |= FLAG_HASH;
+                format++;
+            }
+>>>>>>> e9d3151e1f2a6bc6cc8b4bf80a5ad3c550acbcaf
 
-			result = process_specifier(*ptr, args);
-			if (result == -1)
-			{
-				return (len);
-			}
+            field_width = extractFieldWidth(&format);
+            precision = extractPrecision(&format);
 
-			len += result;
-		}
-		else
-		{
-			_write(*ptr);
-			len++;
-		}
-		ptr++;
-	}
-	return (len);
+            if (is_valid_specifier(*format))
+            {
+                specifier = *format;
+                result = process_specifier(specifier, args, flag, field_width, precision);
+                if (result == -1)
+                    return (-1);
+
+                len += result;
+                format++;
+            }
+            else
+            {
+                _write('%');
+                format++;
+                len++;
+            }
+        }
+    }
+
+    return (len);
 }
+
 
 /**
  * is_valid_specifier - check if it is a valid spec

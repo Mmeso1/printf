@@ -88,3 +88,34 @@ int handleFlagX(unsigned int value, char specifier)
 	}
 	return (len);
 }
+
+int extractFieldWidth(const char **format)
+{
+	int field_width = 0;
+	
+	if (**format >= '1' && **format <= '9')
+	{
+		sscanf(*format, "%d", &field_width);
+		while (**format >= '0' && **format <= '9')
+			(*format)++;
+	}
+	return (field_width);
+}
+
+int extractPrecision(const char **format)
+{
+	int precision = -1;
+	
+	if (**format == '.')
+	{
+		(*format)++;
+		if (**format >= '0' && **format <= '9')
+		{
+			sscanf(*format, "%d", &precision);
+			while (**format >= '0' && **format <= '9')
+				(*format)++;
+		}
+	}
+	
+	return (precision);
+}
