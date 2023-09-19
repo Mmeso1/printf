@@ -24,6 +24,12 @@ int custom_specifier(char specifier, va_list args)
 			return (handleUnsignedInt(args, specifier));
 		case 'S':
 			return (handleCustomS(args));
+		case 'r':
+			const char *str = va_arg(args, const char *);
+			return (reverse_string(str));
+		case 'R':
+			const char *str = va_arg(args, const char *);
+			return (rot13_string(str));
 
 		case 'b':
 			{
