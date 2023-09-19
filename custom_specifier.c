@@ -25,11 +25,9 @@ int custom_specifier(char specifier, va_list args)
 		case 'S':
 			return (handleCustomS(args));
 		case 'r':
-			const char *str = va_arg(args, const char *);
-			return (reverse_string(str));
+			return (reverse_string(va_arg(args, const char *)));
 		case 'R':
-			const char *str = va_arg(args, const char *);
-			return (rot13_string(str));
+			return (rot13_string(va_arg(args, const char *)));
 
 		case 'b':
 			{

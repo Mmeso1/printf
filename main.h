@@ -19,7 +19,7 @@ int binary_converter(va_list args);
 char hex_to_char(int value);
 int get_flags(const char *format, va_list args);
 int reverse_string(const char *str);
-int rot13_string(const char *str)
+int rot13_string(const char *str);
 int process_format_string(const char *format, va_list args);
 
 #endif

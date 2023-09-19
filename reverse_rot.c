@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdio.h>
 
 /**
  * reverse_string - reverse string
@@ -28,15 +29,18 @@ int reverse_string(const char *str)
 int rot13_string(const char *str)
 {
 	int length = 0;
-	char c, base;
+	char c;
 
 	while (str[length] != '\0')
 	{
 		c = str[length];
-		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		if (c >= 'a' && c <= 'z')
 		{
-			base = (c >= 'a' && c <= 'z') ? 'a' : 'A';
-			c = (c - base + 13) % 26 + base;
+			c = ((c - 'a' + 13) % 26) + 'a';
+		}
+		else if (c >= 'A' && c <= 'Z')
+		{
+			c = ((c - 'A' + 13) % 26) + 'A';
 		}
 		_write(c);
 		length++;

@@ -119,5 +119,5 @@ bool is_valid_specifier(char c)
 	return (c == 'c' || c == 's' || c == '%'
 		|| c == 'b' || c == 'd' || c == 'i'
 		|| c == 'u' || c == 'o' || c == 'x' || c == 'X'
-		|| c == 'S' || c == 'p');
+		|| c == 'S' || c == 'p' || c == 'r' || c == 'R');
 }
