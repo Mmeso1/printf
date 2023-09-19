@@ -24,35 +24,52 @@ int custom_specifier(char specifier, va_list args)
 			return (handleUnsignedInt(args, specifier));
 		case 'S':
 			return (handleCustomS(args));
+		case 'r':
+			return (reverse_string(va_arg(args, const char *)));
+		case 'R':
+			return (rot13_string(va_arg(args, const char *)));
 
 		case 'b':
 			{
-				unsigned int num = va_arg(args, unsigned int);
-				int len = 0;
-				int bit;
-
-				if (num == 0)
-				{
-					_write('0');
-					len = 1;
-				}
-				else
-				{
-					while (num > 0)
-					{
-						bit = num % 2;
-						_write(bit + '0');
-						num /= 2;
-						len++;
-					}
-				}
-				return (len);
+				return (binary_converter(args));
 			}
 		default:
 			return (-1);
 	}
 }
 
+/**
+ * binary_converter - convert args to binary
+ * @args: the arguments
+ * Return: length of binary
+ */
+int binary_converter(va_list args)
+{
+	unsigned int num = va_arg(args, unsigned int);
+	int len = 0, i, j, bit;
+	char binary[33];
+
+	if (num == 0)
+	{
+		_write('0');
+	}
+	else
+	{
+		i = 0;
+		while (num > 0)
+		{
+			bit = num % 2;
+			binary[i++] = bit + '0';
+			num /= 2;
+		}
+		for (j = i - 1; j >= 0; j--)
+		{
+			_write(binary[j]);
+			len++;
+		}
+	}
+	return (len);
+}
 /**
  * get_format_string - to get the format specifiers
  * @specifier: the specifier character
@@ -90,7 +107,7 @@ const char *get_format_string(char specifier)
  */
 int handleSignedInt(va_list args, char specifier)
 {
-	int num = va_arg(args, int), temp, len, written_len;
+	int num = va_arg(args, int), temp, len;
 	char *num_str;
 	const char *format;
 
@@ -118,10 +135,10 @@ int handleSignedInt(va_list args, char specifier)
 
 	format = get_format_string(specifier);
 	snprintf(num_str, len + 1, format, num);
-	written_len = write_string(num_str);
+	write_string(num_str);
 	free(num_str);
 
-	return (written_len);
+	return (len);
 }
 
 /**

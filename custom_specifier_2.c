@@ -25,10 +25,6 @@ int handleCustomS(va_list args)
 			{
 				_write('\\');
 				_write('x');
-				if (s[i] < 16)
-				{
-					_write('0');
-				}
 				_write(hex_to_char(s[i] >> 4));
 				_write(hex_to_char(s[i] & 0xF));
 				len += 4;
