@@ -103,7 +103,7 @@ const char *get_format_string(char specifier)
  */
 int handleSignedInt(va_list args, char specifier)
 {
-	int num = va_arg(args, int), temp, len, written_len;
+	int num = va_arg(args, int), temp, len;
 	char *num_str;
 	const char *format;
 
@@ -131,10 +131,10 @@ int handleSignedInt(va_list args, char specifier)
 
 	format = get_format_string(specifier);
 	snprintf(num_str, len + 1, format, num);
-	written_len = write_string(num_str);
+	write_string(num_str);
 	free(num_str);
 
-	return (written_len);
+	return (len);
 }
 
 /**
