@@ -78,7 +78,7 @@ int process_format_string(const char *format, va_list args)
 {
 	int len = 0;
 	const char *ptr = format;
-	int result, field_width;
+	int result, field_width = 0;
 	char flag;
 
 	while (*ptr)
@@ -87,7 +87,6 @@ int process_format_string(const char *format, va_list args)
 		{
 			ptr++;
 			flag = FLAG_NONE;
-
 			while (*ptr == '+' || *ptr == '-' || *ptr == '0' || *ptr == ' ' || *ptr == '#')
 			{
 				flag |= (*ptr == '+') ? FLAG_PLUS : 0;
@@ -96,38 +95,41 @@ int process_format_string(const char *format, va_list args)
 				flag |= (*ptr == ' ') ? FLAG_SPACE : 0;
 				flag |= (*ptr == '#') ? FLAG_HASH : 0;
 
-				if ((*ptr == '+' && field_width > 0) || (*ptr == '-' && field_width < 0))
+				if (flag == 0x01)
 				{
-					_write((*ptr == '+') ? '+' : '-');
+					_write('+');
 					len++;
 				}
+				else if (flag == 0x10)
+				{
+					_write('0');
+					_write('x');
+					len += 2;
+				}
 				ptr++;
+				while (*ptr >= '0' && *ptr <= '9')
+				{
+					field_width = field_width * 10 + (*ptr - '0');
+					ptr++;
+				}
 			}
-			while (*format >= '0' && *format <= '9')
-			{
-				field_width = field_width * 10 + (*format - '0');
-				format++;
-			}
-			
 			if (!is_valid_specifier(*ptr))
 			{
-				return (len);
+				_write('%');
+				return (len + 1);
 			}
-
 			result = process_specifier(*ptr, args);
 			if (result == -1)
-			{
-				return (len);
-			}
-
+				return (-1);
 			len += result;
+			ptr++;
 		}
 		else
 		{
 			_write(*ptr);
 			len++;
+			ptr++;
 		}
-		ptr++;
 	}
 	return (len);
 }
